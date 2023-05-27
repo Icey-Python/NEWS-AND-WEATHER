@@ -1,11 +1,11 @@
 // API Keys
-const NEWS_API_KEY = '59c29cc8c8684ab18fe6405701ecf0bd';
+const NEWS_API_KEY = 'UrD_SLL4k43b-X1oT5IMh3MgSsrkcl5PLSki-4Fb07Q';
 const WEATHER_API_KEY = '07706cca23f9b49c22de37b86c29ba34';
 
 const TOP_NEWS_KEY = "5d57189fe0e64026978a8c1d31a3bd30"
 
 // URLs
-const NEWS_API_URL = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_API_KEY}`;
+const NEWS_API_URL = `https://api.newscatcherapi.com/v2/latest_headlines?countries=US`;
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=${WEATHER_API_KEY}`;
 const TOP_NEWS_URL = `https://api.worldnewsapi.com/search-news?api-key=${TOP_NEWS_KEY}`
 
@@ -18,21 +18,22 @@ const categoryLinks = document.querySelectorAll('.category');
 // Get News Articles
 function getNews(category) {
 	$.ajax({
-		url: NEWS_API_URL +`&category=${category}`
+		url: NEWS_API_URL +`&topic=${category}`,
+		headers:{
+			'x-api-key': `${NEWS_API_KEY}`
+		}
 	}).done(function(response) {
 		let articles = response.articles;
 		let output = '';
 
 		articles.forEach(function(article) {
             output +=`<article>`
-            if(article.urlToImage !== "" && article.urlToImage !== null){
-                console.log(article.urlToImage)
-                output += `<img src='${article.urlToImage}'/>`
-            }
+            output += `<img src='${article.media}'/>`
             output += `
 					<h3>${article.title}</h3>
-					<p>${article.description}</p>
-					<a href="${article.url}" target="_blank">Read More</a>
+					<h6>${article.author}</h6>
+					<p>${article.excerpt}</p>
+					<a href="${article.link}" target="_blank">Read More</a>
 				</article>
 			`;
 
@@ -131,6 +132,6 @@ categoryLinks.forEach(function(link) {
 
 
 // Default News and Weather
-getNews('general');
+getNews('world');
 getWeather('New York');
 getTopHeadlines()
