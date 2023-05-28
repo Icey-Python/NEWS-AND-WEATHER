@@ -1,11 +1,11 @@
 // API Keys
-const NEWS_API_KEY = 'UrD_SLL4k43b-X1oT5IMh3MgSsrkcl5PLSki-4Fb07Q';
+const NEWS_API_KEY = 'UBc1AuxcBA6JiDlYVqESYNBIbi0jsSh05DresSkIqWM';
 const WEATHER_API_KEY = '07706cca23f9b49c22de37b86c29ba34';
 
 const TOP_NEWS_KEY = "5d57189fe0e64026978a8c1d31a3bd30"
 
 // URLs
-const NEWS_API_URL = `https://api.newscatcherapi.com/v2/latest_headlines?countries=US`;
+const NEWS_API_URL = `https://api.newscatcherapi.com/v2/latest_headlines?countries=US&page_size=100`;
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=${WEATHER_API_KEY}`;
 const TOP_NEWS_URL = `https://api.worldnewsapi.com/search-news?api-key=${TOP_NEWS_KEY}`
 
@@ -28,11 +28,12 @@ function getNews(category) {
 
 		articles.forEach(function(article) {
             output +=`<article>`
-            output += `<img src='${article.media}'/>`
             output += `
 					<h3>${article.title}</h3>
-					<h6>${article.author}</h6>
 					<p>${article.excerpt}</p>
+					<img src='${article.media}'/>
+					<h6>${article.author}</h6>
+					<p>${article.summary}</p>
 					<a href="${article.link}" target="_blank">Read More</a>
 				</article>
 			`;
