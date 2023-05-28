@@ -86,7 +86,7 @@ article a{
 article p {
 	line-height: 25px;
 }
-@media screen and (max-width: 300px) {
+@media screen and (min-width: 600px) {
 	main {
 		flex-direction: column;
 	}
@@ -94,3 +94,4 @@ article p {
 		flex-basis: 100%;
 	}
 }
+
