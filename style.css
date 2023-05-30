@@ -1,25 +1,26 @@
 body {
 	font-family: Arial, sans-serif;
 	background-color: #f2f2f2;
-    margin:0;
-    padding:0;
+	margin: 0;
+	padding: 0;
 }
 
 header {
 	background-color: #333;
 	color: #fff;
-	padding-top: 10px; 
+	padding-top: 20px; /* Increase the padding for smaller screens */
 	text-align: center;
 	position: sticky;
-	top:0px;
+	top: 0;
 }
-header h1{
-	padding-inline:10px;
+
+header h1 {
+	padding-inline: 10px;
 }
 
 nav {
 	background-color: #ddd;
-	padding: 15px;
+	padding: 20px; /* Increase the padding for smaller screens */
 	margin-inline: 0;
 }
 
@@ -32,7 +33,7 @@ nav ul {
 nav li {
 	display: inline-block;
 	margin-right: 10px;
-	margin-top:5px
+	margin-top: 5px;
 }
 
 nav a {
@@ -40,8 +41,6 @@ nav a {
 	text-decoration: none;
 	padding: 5px;
 	border-radius: 10px;
-	
-
 }
 
 nav a:hover {
@@ -51,47 +50,68 @@ nav a:hover {
 
 main {
 	display: flex;
-	flex-direction:row;
+	flex-direction: row;
 	justify-content: space-between;
 	padding: 20px;
 }
 
 section {
-	border-radius:10px;
+	border-radius: 10px;
 	flex-basis: 46%;
 	background-color: #fff;
 	padding: 20px;
 	margin-bottom: 20px;
 	overflow-y: scroll;
-	height:max-content;
+	height: max-content;
 }
 
 section h2 {
 	margin-top: 0;
 }
-article{
-    margin-top: 0.5rem;
+
+article {
+	margin-top: 0.5rem;
 	padding: 5px;
 	margin-bottom: 10px;
 }
 
-article img{
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 0.5rem;
+article img {
+	width: 100%;
+	border-radius: 10px;
+	margin-bottom: 0.5rem;
 }
-article a{
+
+article a {
 	text-decoration: none;
 }
+
 article p {
 	line-height: 25px;
 }
-@media screen and (max-width: 600px) {
+
+@media screen and (min-width: 600px) {
 	main {
 		flex-direction: column;
 	}
 	section {
-		flex-basis: 100%;
+		flex-basis: 90%;
 	}
 }
 
+@media screen and (min-width: 480px) {
+	main {
+		flex-direction: column;
+	}
+	section {
+		flex-basis: 90%;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	main {
+		flex-direction: row;
+	}
+	section {
+		flex-basis: 46%;
+	}
+}
