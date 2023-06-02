@@ -17,7 +17,7 @@ const categoryLinks = document.querySelectorAll('.category');
 // Get News Articles
 function getNews(category) {
 	$.ajax({
-		url: `http://api.mediastack.com/v1/news?categories=${category}`,
+		url: `https://cors-anywhere.herokuapp.com/http://api.mediastack.com/v1/news?categories=${category}`,
 		data: {
 		  access_key: '55931aa0a81e2ec4757e0a486834e84b',
 		  languages: 'en',
