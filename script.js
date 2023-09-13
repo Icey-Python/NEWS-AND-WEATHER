@@ -1,34 +1,29 @@
-// Add CORS proxy url
-const corsProxy = 'https://cors-anywhere.herokuapp.com/';
-const news_url = corsProxy + "https://news-feed-ke.vercel.app/news"
+//news url
+const news_url = "https://news-feed-ke.vercel.app/news"
 
+//image proxy
+const proxy = "https://news-feed-ke.vercel.app/proxy-image"
 // DOM Elements
 const newsArticles = document.getElementById('news-articles');
-const topNewsArticles = document.querySelector('.side-bar');
-const weatherInfo = document.getElementById('weather-info');
-const categoryLinks = document.querySelectorAll('.category');
 
 // Get News Articles
 function getNews() {
   $.ajax({
     url: news_url,
   }).done(function(response) {
-    let articles = response.data;
-    console.log(articles)
+    let articles = response;
     let output = '';
 
     articles.forEach(function(article) {
-      content = ""
-        (article.content).forEach((paragraph) => {
-          content += paragraph
-        })
+      content = article.content.join('<br>')
       output += `<article>`
       output += `
-					<h3>${article.title}</h3>
-					<img src='${article.image}'/>
-					<h6>${article.author}</h6>
-          <h6>${article.image_description}</h6>
+					<h2 class='bounded' >${article.title}</h2>
+					<img src='${proxy}?url=${article.image}'/>
+					<h6>${article.author}| ${article.category}</h6>
+          <h4><em>${article.image_description}</em></h4>
 					<p>${content}</p>
+          <em class='date'>${article.date}</em>
 				</article>
 			`;
 
