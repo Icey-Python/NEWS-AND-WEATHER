@@ -1,9 +1,8 @@
 // API Keys
-const NEWS_API_KEY = 'UBc1AuxcBA6JiDlYVqESYNBIbi0jsSh05DresSkIqWM';
 const WEATHER_API_KEY = '07706cca23f9b49c22de37b86c29ba34';
 
 const TOP_NEWS_KEY = "5d57189fe0e64026978a8c1d31a3bd30"
-//http://api.mediastack.com/v1/news?access_key = 55931aa0a81e2ec4757e0a486834e84b&countries = us, gb, de
+
 // URLs
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=${WEATHER_API_KEY}`;
 const TOP_NEWS_URL = `https://api.worldnewsapi.com/search-news?api-key=${TOP_NEWS_KEY}`
@@ -17,13 +16,9 @@ const categoryLinks = document.querySelectorAll('.category');
 // Get News Articles
 function getNews(category) {
 	$.ajax({
-		url: `http://api.mediastack.com/v1/news?categories=${category}`,
-		data: {
-		  access_key: '55931aa0a81e2ec4757e0a486834e84b',
-		  languages: 'en',
-		  countries: 'ca,fr',
-		  limit: 30,
-		  offset: 30,
+		url: `https://api.newscatcherapi.com/v2/latest_headlines?countries=US&topic=${category}&page_size=30`,
+		headers:{
+			"x-api-key": 'UrD_SLL4k43b-X1oT5IMh3MgSsrkcl5PLSki-4Fb07Q',
 		}
 	}).done(function(response) {
 		let articles = response.data;
@@ -33,10 +28,11 @@ function getNews(category) {
             output +=`<article>`
             output += `
 					<h3>${article.title}</h3>
-					<img src='${article.image}'/>
+					<p>${article.excerpt}</p>
+					<img src='${article.media}'/>
 					<h6>${article.author}</h6>
-					<p>${article.description}</p>
-					<a href="${article.url}" target="_blank">Read More</a>
+					<p>${article.summary}</p>
+					<a href="${article.link}" target="_blank">Read More</a>
 				</article>
 			`;
 
@@ -135,6 +131,6 @@ categoryLinks.forEach(function(link) {
 
 
 // Default News and Weather
-getNews('general');
+getNews('world');
 getWeather('New York');
 getTopHeadlines()
