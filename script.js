@@ -2,7 +2,7 @@
 const news_url = "https://news-feed-ke.vercel.app/news"
 
 //image proxy
-const proxy = "https://news-feed-ke.vercel.app/proxy-image"
+const proxy = "https://news-feed-ke.vercel.app/proxy-image?url="
 // DOM Elements
 const newsArticles = document.getElementById('news-articles');
 
@@ -18,7 +18,7 @@ function getNews() {
       output += `<article>`
       output += `
 					<h2 class='bounded' >${article.title}</h2>
-					<img src='${proxy}?url=${article.image}'/>
+					<img src=proxy+article.image/>
 					<h6>${article.author}| ${article.category}</h6>
           <h4><em>${article.image_description}</em></h4>
 					<p>${article.content}</p>
