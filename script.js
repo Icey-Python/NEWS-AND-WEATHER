@@ -15,14 +15,13 @@ function getNews() {
     let output = '';
 
     articles.forEach(function(article) {
-      content = article.content.join('<br>')
       output += `<article>`
       output += `
 					<h2 class='bounded' >${article.title}</h2>
 					<img src='${proxy}?url=${article.image}'/>
 					<h6>${article.author}| ${article.category}</h6>
           <h4><em>${article.image_description}</em></h4>
-					<p>${content}</p>
+					<p>${article.content}</p>
           <em class='date'>${article.date}</em>
 				</article>
 			`;
