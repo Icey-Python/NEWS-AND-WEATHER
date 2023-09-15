@@ -1,13 +1,16 @@
 const apiKey = '8QK6bvSZbM2nlcrmGzMFmm8dtTuUeQfN'
 
-//news url
+// News URL
 const news_url = "https://news-feed-ke.vercel.app/news"
 
-//image proxy
+// Image proxy
 const proxy = "https://news-feed-ke.vercel.app/proxy-image?url"
+
 // DOM Elements
 const newsArticles = document.getElementById('news-articles');
 const header_tag = document.querySelector('header')
+const location_url = `https://news-feed-ke.vercel.app/proxy_location/${apiKey}`
+let weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather`
 
 // Get News Articles
 function getNews() {
@@ -20,14 +23,14 @@ function getNews() {
     articles.forEach(function(article) {
       output += `<article>`
       output += `
-					<h2 class='bounded' >${article.title}</h2>
-					<img src='${proxy}=${article.image_url}'/>
-					<h6>${article.author}| ${article.category}</h6>
-          <h4><em>${article.image_description}</em></h4>
-					<p>${article.content}</p>
-          <em class='date'>${article.date}</em>
-				</article>
-			`;
+        <h2 class='bounded' >${article.title}</h2>
+        <img src='${proxy}=${article.image_url}'/>
+        <h6>${article.author}| ${article.category}</h6>
+        <h4><em>${article.image_description}</em></h4>
+        <p>${article.content}</p>
+        <em class='date'>${article.date}</em>
+      </article>
+    `;
 
     });
     newsArticles.innerHTML = output;
@@ -45,20 +48,21 @@ async function getWeather() {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
 
-      const url = `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat},${lon}`;
+      const url = `${location_url}?q=${lat},${lon}`;
 
       try {
         const response = await fetch(url);
         const locationData = await response.json();
         const locationKey = locationData.Key;
 
-        const weatherUrl = `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}`;
-        
+        weatherUrl = `${weatherUrl}/${locationKey}?api_key=${apiKey}`;
         const weatherResponse = await fetch(weatherUrl);
         const weatherData = await weatherResponse.json();
+        console.log(weatherData);
 
         resolve(weatherData[0]);
       } catch(error) {
+        console.log('Error', weatherUrl)
         reject(error);
       }
 
@@ -72,7 +76,7 @@ async function getWeather() {
 
 getWeather()
   .then(data => {
-    const weatherData = data;
+    console.log(data)
     // Select elements
     const weather_tag = document.querySelector('#weather');
     const tempElement = document.querySelector('#temp');
@@ -80,12 +84,12 @@ getWeather()
     const descriptionElement = document.querySelector('#weather-description');
 
     // Update elements
-    tempElement.innerText = weatherData.Temperature.Metric.Value; 
+    tempElement.innerText = data.Temperature.Metric.Value; 
 
-    const iconCode = weatherData.WeatherIcon;
+    const iconCode = data.WeatherIcon;
     weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
     console.log(weatherIconElement.src)
-    descriptionElement.innerText = weatherData.WeatherText;
+    descriptionElement.innerText = data.WeatherText;
 
     // Styling
     if(iconCode < 10) {
@@ -108,7 +112,3 @@ getWeather()
   });
 
 getNews();
-
-
-
-
