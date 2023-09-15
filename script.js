@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // API Keys
 const WEATHER_API_KEY = '07706cca23f9b49c22de37b86c29ba34';
 
@@ -6,14 +7,18 @@ const TOP_NEWS_KEY = "5d57189fe0e64026978a8c1d31a3bd30"
 // URLs
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=${WEATHER_API_KEY}`;
 const TOP_NEWS_URL = `https://api.worldnewsapi.com/search-news?api-key=${TOP_NEWS_KEY}`
+=======
+//news url
+const news_url = "https://news-feed-ke.vercel.app/news"
+>>>>>>> 4666f50d23a01ec53aa18de0eb3e8859065e8b21
 
+//image proxy
+const proxy = "https://news-feed-ke.vercel.app/proxy-image?url"
 // DOM Elements
 const newsArticles = document.getElementById('news-articles');
-const topNewsArticles = document.querySelector('.side-bar');
-const weatherInfo = document.getElementById('weather-info');
-const categoryLinks = document.querySelectorAll('.category');
 
 // Get News Articles
+<<<<<<< HEAD
 function getNews(category) {
 	$.ajax({
 		url: `https://api.newscatcherapi.com/v2/latest_headlines?countries=US&topic=${category}&page_size=30`,
@@ -33,16 +38,36 @@ function getNews(category) {
 					<h6>${article.author}</h6>
 					<p>${article.summary}</p>
 					<a href="${article.link}" target="_blank">Read More</a>
+=======
+function getNews() {
+  $.ajax({
+    url: news_url,
+  }).done(function(response) {
+    let articles = response;
+    let output = '';
+
+    articles.forEach(function(article) {
+      output += `<article>`
+      output += `
+					<h2 class='bounded' >${article.title}</h2>
+					<img src='${proxy}=${article.image_url}'/>
+					<h6>${article.author}| ${article.category}</h6>
+          <h4><em>${article.image_description}</em></h4>
+					<p>${article.content}</p>
+          <em class='date'>${article.date}</em>
+>>>>>>> 4666f50d23a01ec53aa18de0eb3e8859065e8b21
 				</article>
 			`;
 
-		});
-		newsArticles.innerHTML = output;
-	}).fail(function(error) {
-		console.log(error);
-	});
+    });
+    newsArticles.innerHTML = output;
+  }).fail(function(error) {
+    console.log(error);
+  });
 }
+getNews();
 
+<<<<<<< HEAD
 // Get Weather Info
 function getWeather(city) {
 	$.ajax({
@@ -134,3 +159,5 @@ categoryLinks.forEach(function(link) {
 getNews('world');
 getWeather('New York');
 getTopHeadlines()
+=======
+>>>>>>> 4666f50d23a01ec53aa18de0eb3e8859065e8b21
