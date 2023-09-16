@@ -21,7 +21,7 @@ function getNews() {
   $.ajax({
     url: news_url,
   }).done(function(response) {
-    let articles = response;
+    let articles = response.content;
     let output = '';
 
     articles.forEach(function(article) {
