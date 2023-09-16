@@ -62,7 +62,6 @@ function getNews() {
     }).done((data)=>{
       let category_chips = ''
       data.forEach((category)=>{
-        console.log(category)
         category_chips +=`
         <button class="category" onclick=getCategory('${encodeURIComponent(category)}')>
 					<span class="lable">${category}</span>
@@ -130,7 +129,6 @@ async function getWeather() {
               } else {
                 // If locationData doesn't contain a valid Key, reject with an error
                 apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
                 getWeather().then(resolve).catch(reject); // Retry with the new key
               }
             } catch (error) {
@@ -139,7 +137,7 @@ async function getWeather() {
               // If the error indicates a rate limit or authentication issue, switch to the next API key
               if (error.status === 401 || error.status === 429) {
                 apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
+               
                 getWeather().then(resolve).catch(reject); // Retry with the new key
               } else {
                 reject(error);
@@ -148,7 +146,7 @@ async function getWeather() {
           });
         } else if (permissionStatus.state === 'prompt') {
           // Geolocation permission is prompt (not granted or denied yet)
-          console.log('Geolocation permission prompt.');
+          
           navigator.geolocation.getCurrentPosition(async position => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
@@ -173,7 +171,7 @@ async function getWeather() {
               } else {
                 // If locationData doesn't contain a valid Key, reject with an error
                 apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
+                
                 getWeather().then(resolve).catch(reject); // Retry with the new key
               }
             } catch (error) {
@@ -192,7 +190,7 @@ async function getWeather() {
           // You can request permission using navigator.geolocation.getCurrentPosition() here
         } else {
           // Geolocation permission is denied
-          console.log('Geolocation permission denied.');
+          console.error('Geolocation permission denied.');
           // You may want to inform the user or provide an alternative experience
         }
       })
@@ -207,7 +205,7 @@ async function getWeather() {
 // Usage:
 getWeather()
 .then(data => {
-    console.log(data);
+   
     // Select elements
     const weather_tag = document.querySelector('#weather');
     const tempElement = document.querySelector('#temp');
@@ -225,7 +223,7 @@ getWeather()
         iconCode = "0"+iconCode.toString()
       }
       weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
-      console.log(weatherIconElement.src)
+      
       descriptionElement.innerText = weatherData.WeatherText;
 
       // Styling
