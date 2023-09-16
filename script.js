@@ -14,6 +14,8 @@ const proxy = "https://news-feed-ke.vercel.app/proxy-image?url"
 const newsArticles = document.getElementById('news-articles');
 const header_tag = document.querySelector('header')
 const load_more = document.querySelector('.button')
+const loader = document.querySelector('.loader')
+
 let weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather`
 let current_page = 0
 let page_count = 0
@@ -27,6 +29,9 @@ function getNews() {
   $.ajax({
     url: `${news_url}?page=${current_page}`,
   }).done(function(response) {
+    loader.classList.add('hidden')
+    newsArticles.classList.remove('hidden')
+    load_more.classList.remove('hidden')
     let articles = response.content;
     page_count = response.page_count + 1
     let output = '';
