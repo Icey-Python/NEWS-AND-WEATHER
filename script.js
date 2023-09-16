@@ -88,6 +88,7 @@ getWeather()
 
     const iconCode = data.WeatherIcon;
     weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
+    print(weatherIconElement.src)
     console.log(weatherIconElement.src)
     descriptionElement.innerText = data.WeatherText;
 
@@ -97,7 +98,7 @@ getWeather()
       weather_tag.style.backgroundColor = '#cee4ae'; 
       weather_tag.style.color="#333"
       header_tag.style.background = "#cee4ae"
-      header_tag.style.color="#ddd"
+      header_tag.style.color="#333"
     } else {
       // Night time icon
       weather_tag.style.backgroundColor = '#08425d';
