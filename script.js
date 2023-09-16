@@ -13,15 +13,22 @@ const proxy = "https://news-feed-ke.vercel.app/proxy-image?url"
 // DOM Elements
 const newsArticles = document.getElementById('news-articles');
 const header_tag = document.querySelector('header')
-
+const load_more = document.querySelector('.button')
 let weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather`
+let current_page = 0
+let page_count = 0
 
+load_more.addEventListener('click',()=>{
+  current_page = (current_page + 1)%page_count
+  getNews()
+})
 // Get News Articles
 function getNews() {
   $.ajax({
-    url: news_url,
+    url: `${news_url}?page=${current_page}`,
   }).done(function(response) {
     let articles = response.content;
+    page_count = response.page_count + 1
     let output = '';
 
     articles.forEach(function(article) {
@@ -37,7 +44,7 @@ function getNews() {
     `;
 
     });
-    newsArticles.innerHTML = output;
+    newsArticles.innerHTML += output;
   }).fail(function(error) {
     console.log(error);
   });
