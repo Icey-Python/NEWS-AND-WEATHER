@@ -27,9 +27,7 @@ load_more.addEventListener('click',()=>{
 })
 function getCategory(category){
   loader.classList.remove('hidden')
-  if (category == "Life & Style"){
-    category = "Life%20%26%20Style"
-  }
+ 
   $.ajax({
     url:`https://news-feed-ke.vercel.app/news/category/${category}`
   }).done((data)=>{
