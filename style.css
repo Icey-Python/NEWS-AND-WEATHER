@@ -250,7 +250,59 @@ h6{
 		font-size:2rem;
 	}
 }
-
+.category{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px 16px 10px 18px;
+	gap: 8px;
+	height: 40px;
+	width: 128px;
+	border: none;
+	background: #5b6aeb49;
+	border-radius: 20px;
+	cursor: pointer;
+	margin-top:0.2rem
+  }
+  
+  .lable {
+	margin-top: 1px;
+	font-size: 19px;
+	line-height: 22px;
+	color: #4371b3;
+	font-family: sans-serif;
+	letter-spacing: 1px;
+  }
+  
+  .category:hover {
+	background: #056bfa27;
+  }
+  
+  @keyframes spin {
+	0% {
+	  transform: rotate(0deg);
+	}
+  
+	25% {
+	  transform: rotate(-8deg);
+	}
+  
+	50% {
+	  transform: rotate(0deg);
+	}
+  
+	75% {
+	  transform: rotate(8deg);
+	}
+  
+	100% {
+	  transform: rotate(0deg);
+	}
+  }
+  .category-holder{
+	columns: 4;
+	column-gap: 0.1rem;
+}
 @media screen and (min-width: 300px) {
 	main {
 		flex-direction: column-reverse;
@@ -267,13 +319,41 @@ h6{
 	section h2{
 		font-size:2rem;
 	}
+	.category-holder{
+		columns: 2;
+		column-gap: 0.1rem;
+	}
 }
-
+@media screen and (min-width: 700px) {
+	main {
+		flex-direction: column-reverse;
+	}
+	header h1{
+		font-size:2.5rem;
+	}
+	header nav{
+		font-size: 1.6rem;
+	}
+	section {
+		flex-basis: 90%;
+	}
+	section h2{
+		font-size:2rem;
+	}
+	.category-holder{
+		columns: 6;
+		column-gap: 0.1rem;
+	}
+}
 @media screen and (min-width: 1200px) {
 	main {
 		flex-direction: row;
 	}
 	section {
 		flex-basis: 46%;
+	}
+	.category-holder{
+		columns: 4;
+		column-gap: 0.1rem;
 	}
 }
