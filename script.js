@@ -1,5 +1,9 @@
-const apiKey = '8QK6bvSZbM2nlcrmGzMFmm8dtTuUeQfN'
-
+const apiKeys = [
+  '8QK6bvSZbM2nlcrmGzMFmm8dtTuUeQfN',
+  'KhCNpgn7z5JbL4jelukvixPwizkz3lhn',
+  're2m7iao2QV7LpiLE4cr1FdVsBzz1tYl',
+  't8gLK625LY0u4XGRa96LedUtvCe2JknJ'
+]
 // News URL
 const news_url = "https://news-feed-ke.vercel.app/news"
 
@@ -9,7 +13,7 @@ const proxy = "https://news-feed-ke.vercel.app/proxy-image?url"
 // DOM Elements
 const newsArticles = document.getElementById('news-articles');
 const header_tag = document.querySelector('header')
-const location_url = `https://news-feed-ke.vercel.app/proxy_location/${apiKey}`
+
 let weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather`
 
 // Get News Articles
@@ -39,75 +43,155 @@ function getNews() {
   });
 }
 
+// ...
+
+let apiKeyIndex = 0; // Start with the first key
+
+// Inside your `getWeather` function, add the key rotation logic and geolocation permission check
 async function getWeather() {
+  return new Promise(async (resolve, reject) => {
+    // Check geolocation permission status
+    navigator.permissions.query({ name: 'geolocation' })
+      .then(permissionStatus => {
+        if (permissionStatus.state === 'granted') {
+          // Geolocation permission is granted, proceed with location retrieval
+          navigator.geolocation.getCurrentPosition(async position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-  return new Promise((resolve, reject) => {
+            try {
+              // Get the current API key
+              const currentApiKey = apiKeys[apiKeyIndex];
+              const location_url = `https://news-feed-ke.vercel.app/proxy_location/${currentApiKey}`;
+              const url = `${location_url}?q=${lat},${lon}`;
 
-    navigator.geolocation.getCurrentPosition(async position => {
+              const response = await fetch(url);
+              const locationData = await response.json();
 
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+              if (locationData && locationData.Key) {
+                // Build the weather URL with the current API key and locationKey
+                const weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather/${locationData.Key}?api_key=${currentApiKey}`;
 
-      const url = `${location_url}?q=${lat},${lon}`;
+                const weatherResponse = await fetch(weatherUrl);
+                const weatherData = await weatherResponse.json();
 
-      try {
-        const response = await fetch(url);
-        const locationData = await response.json();
-        const locationKey = locationData.Key;
+                resolve(weatherData);
+              } else {
+                // If locationData doesn't contain a valid Key, reject with an error
+                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
+                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
+                getWeather().then(resolve).catch(reject); // Retry with the new key
+              }
+            } catch (error) {
+              console.log('Error', error);
 
-        weatherUrl = `${weatherUrl}/${locationKey}?api_key=${apiKey}`;
-        const weatherResponse = await fetch(weatherUrl);
-        const weatherData = await weatherResponse.json();
-        console.log(weatherData);
+              // If the error indicates a rate limit or authentication issue, switch to the next API key
+              if (error.status === 401 || error.status === 429) {
+                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
+                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
+                getWeather().then(resolve).catch(reject); // Retry with the new key
+              } else {
+                reject(error);
+              }
+            }
+          });
+        } else if (permissionStatus.state === 'prompt') {
+          // Geolocation permission is prompt (not granted or denied yet)
+          console.log('Geolocation permission prompt.');
+          navigator.geolocation.getCurrentPosition(async position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-        resolve(weatherData[0]);
-      } catch(error) {
-        console.log('Error', weatherUrl)
+            try {
+              // Get the current API key
+              const currentApiKey = apiKeys[apiKeyIndex];
+              const location_url = `https://news-feed-ke.vercel.app/proxy_location/${currentApiKey}`;
+              const url = `${location_url}?q=${lat},${lon}`;
+
+              const response = await fetch(url);
+              const locationData = await response.json();
+
+              if (locationData && locationData.Key) {
+                // Build the weather URL with the current API key and locationKey
+                const weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather/${locationData.Key}?api_key=${currentApiKey}`;
+
+                const weatherResponse = await fetch(weatherUrl);
+                const weatherData = await weatherResponse.json();
+
+                resolve(weatherData);
+              } else {
+                // If locationData doesn't contain a valid Key, reject with an error
+                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
+                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
+                getWeather().then(resolve).catch(reject); // Retry with the new key
+              }
+            } catch (error) {
+              console.log('Error', error);
+
+              // If the error indicates a rate limit or authentication issue, switch to the next API key
+              if (error.status === 401 || error.status === 429) {
+                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
+                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
+                getWeather().then(resolve).catch(reject); // Retry with the new key
+              } else {
+                reject(error);
+              }
+            }
+          });
+          // You can request permission using navigator.geolocation.getCurrentPosition() here
+        } else {
+          // Geolocation permission is denied
+          console.log('Geolocation permission denied.');
+          // You may want to inform the user or provide an alternative experience
+        }
+      })
+      .catch(error => {
+        console.error('Error checking geolocation permission:', error);
         reject(error);
-      }
-
-    });
-
+      });
   });
-  
 }
 
-// Usage:
 
+// Usage:
 getWeather()
-  .then(data => {
-    console.log(data)
+.then(data => {
+    console.log(data);
     // Select elements
     const weather_tag = document.querySelector('#weather');
     const tempElement = document.querySelector('#temp');
     const weatherIconElement = document.querySelector('#weather-icon');
     const descriptionElement = document.querySelector('#weather-description');
+    
+    // Check if data is valid before updating the elements
+    if (data) {
+      const weatherData = data[0];
+      // Update elements
+      tempElement.innerText = weatherData.Temperature.Metric.Value; 
 
-    // Update elements
-    tempElement.innerText = data.Temperature.Metric.Value; 
+      let iconCode = weatherData.WeatherIcon;
+      if(iconCode < 10){
+        iconCode = "0"+iconCode.toString()
+      }
+      weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
+      console.log(weatherIconElement.src)
+      descriptionElement.innerText = weatherData.WeatherText;
 
-    let iconCode = data.WeatherIcon;
-    if(iconCode < 10){
-      iconCode = "0"+iconCode.toString()
-    }
-    weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
-    console.log(weatherIconElement.src)
-    descriptionElement.innerText = data.WeatherText;
+      // Styling
+      if(iconCode < 10) {
+        // Day time icon
+        weather_tag.style.backgroundColor = '#cee4ae'; 
+        weather_tag.style.color="#333"
+        header_tag.style.background = "#cee4ae"
+        header_tag.style.color="#333"
+      } else {
+        // Night time icon
+        weather_tag.style.backgroundColor = '#08425d';
+        weather_tag.style.color="#ddd"
 
-    // Styling
-    if(iconCode < 10) {
-      // Day time icon
-      weather_tag.style.backgroundColor = '#cee4ae'; 
-      weather_tag.style.color="#333"
-      header_tag.style.background = "#cee4ae"
-      header_tag.style.color="#333"
-    } else {
-      // Night time icon
-      weather_tag.style.backgroundColor = '#08425d';
-      weather_tag.style.color="#ddd"
-
-      header_tag.style.background= "#08425d"
-      header_tag.style.color="#ddd"
+        header_tag.style.background= "#08425d"
+        header_tag.style.color="#ddd"
+      }
     }
   })
   .catch(error => {
@@ -115,3 +199,5 @@ getWeather()
   });
 
 getNews();
+
+
