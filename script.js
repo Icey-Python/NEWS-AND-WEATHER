@@ -91,7 +91,6 @@ getWeather()
       iconCode = "0"+iconCode.toString()
     }
     weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
-    print(weatherIconElement.src)
     console.log(weatherIconElement.src)
     descriptionElement.innerText = data.WeatherText;
 
