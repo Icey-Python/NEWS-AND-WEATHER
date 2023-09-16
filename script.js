@@ -86,7 +86,10 @@ getWeather()
     // Update elements
     tempElement.innerText = data.Temperature.Metric.Value; 
 
-    const iconCode = data.WeatherIcon;
+    let iconCode = data.WeatherIcon;
+    if(iconCode < 10){
+      iconCode = "0"+iconCode.toString()
+    }
     weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
     print(weatherIconElement.src)
     console.log(weatherIconElement.src)
