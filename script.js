@@ -1,9 +1,3 @@
-const apiKeys = [
-  '8QK6bvSZbM2nlcrmGzMFmm8dtTuUeQfN',
-  'KhCNpgn7z5JbL4jelukvixPwizkz3lhn',
-  're2m7iao2QV7LpiLE4cr1FdVsBzz1tYl',
-  't8gLK625LY0u4XGRa96LedUtvCe2JknJ'
-]
 // News URL
 const news_url = "https://news-feed-ke.vercel.app/news"
 
@@ -93,11 +87,6 @@ function getNews() {
   });
 }
 
-// ...
-
-let apiKeyIndex = 0; // Start with the first key
-
-// Inside your `getWeather` function, add the key rotation logic and geolocation permission check
 async function getWeather() {
   return new Promise(async (resolve, reject) => {
     // Check geolocation permission status
@@ -109,85 +98,26 @@ async function getWeather() {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
-            try {
-              // Get the current API key
-              const currentApiKey = apiKeys[apiKeyIndex];
-              const location_url = `https://news-feed-ke.vercel.app/proxy_location/${currentApiKey}`;
-              const url = `${location_url}?q=${lat},${lon}`;
+            // Build the weather URL with the current API key and locationKey
+            const weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather?q=${lat},${lon}`;
 
-              const response = await fetch(url);
-              const locationData = await response.json();
-
-              if (locationData && locationData.Key) {
-                // Build the weather URL with the current API key and locationKey
-                const weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather/${locationData.Key}?api_key=${currentApiKey}`;
-
-                const weatherResponse = await fetch(weatherUrl);
-                const weatherData = await weatherResponse.json();
-
-                resolve(weatherData);
-              } else {
-                // If locationData doesn't contain a valid Key, reject with an error
-                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-                getWeather().then(resolve).catch(reject); // Retry with the new key
-              }
-            } catch (error) {
-              console.log('Error', error);
-
-              // If the error indicates a rate limit or authentication issue, switch to the next API key
-              if (error.status === 401 || error.status === 429) {
-                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-               
-                getWeather().then(resolve).catch(reject); // Retry with the new key
-              } else {
-                reject(error);
-              }
-            }
+            const weatherResponse = await fetch(weatherUrl);
+            const weatherData = await weatherResponse.json();
+            resolve(weatherData);
           });
         } else if (permissionStatus.state === 'prompt') {
-          // Geolocation permission is prompt (not granted or denied yet)
-          
           navigator.geolocation.getCurrentPosition(async position => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
-            try {
-              // Get the current API key
-              const currentApiKey = apiKeys[apiKeyIndex];
-              const location_url = `https://news-feed-ke.vercel.app/proxy_location/${currentApiKey}`;
-              const url = `${location_url}?q=${lat},${lon}`;
+            // Build the weather URL with the current API key and locationKey
+            const weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather?q=${lat},${lon}`;
 
-              const response = await fetch(url);
-              const locationData = await response.json();
+            const weatherResponse = await fetch(weatherUrl);
+            const weatherData = await weatherResponse.json();
 
-              if (locationData && locationData.Key) {
-                // Build the weather URL with the current API key and locationKey
-                const weatherUrl = `https://news-feed-ke.vercel.app/proxy_weather/${locationData.Key}?api_key=${currentApiKey}`;
-
-                const weatherResponse = await fetch(weatherUrl);
-                const weatherData = await weatherResponse.json();
-
-                resolve(weatherData);
-              } else {
-                // If locationData doesn't contain a valid Key, reject with an error
-                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-                
-                getWeather().then(resolve).catch(reject); // Retry with the new key
-              }
-            } catch (error) {
-              console.log('Error', error);
-
-              // If the error indicates a rate limit or authentication issue, switch to the next API key
-              if (error.status === 401 || error.status === 429) {
-                apiKeyIndex = (apiKeyIndex + 1) % apiKeys.length; // Rotate to the next key
-                console.log('Switching to the next API key:', apiKeys[apiKeyIndex]);
-                getWeather().then(resolve).catch(reject); // Retry with the new key
-              } else {
-                reject(error);
-              }
-            }
+            resolve(weatherData);
           });
-          // You can request permission using navigator.geolocation.getCurrentPosition() here
         } else {
           // Geolocation permission is denied
           console.error('Geolocation permission denied.');
@@ -205,7 +135,6 @@ async function getWeather() {
 // Usage:
 getWeather()
 .then(data => {
-   
     // Select elements
     const weather_tag = document.querySelector('#weather');
     const tempElement = document.querySelector('#temp');
@@ -214,20 +143,17 @@ getWeather()
     
     // Check if data is valid before updating the elements
     if (data) {
-      const weatherData = data[0];
+      const weatherData = data.weather;
       // Update elements
-      tempElement.innerText = weatherData.Temperature.Metric.Value; 
+      tempElement.innerText = weatherData.temp; 
 
-      let iconCode = weatherData.WeatherIcon;
-      if(iconCode < 10){
-        iconCode = "0"+iconCode.toString()
-      }
-      weatherIconElement.src = `https://developer.accuweather.com/sites/default/files/${iconCode}-s.png`;
+     
+      weatherIconElement.src = weatherData.icon;
       
-      descriptionElement.innerText = weatherData.WeatherText;
+      descriptionElement.innerText = weatherData.text;
 
       // Styling
-      if(iconCode < 10) {
+      if(weatherData.is_day) {
         // Day time icon
         weather_tag.style.backgroundColor = '#cee4ae'; 
         weather_tag.style.color="#333"
