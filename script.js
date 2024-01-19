@@ -103,7 +103,7 @@ function show_news_in_popup(id){
   let popup_inner = document.querySelector('.popup-inner')
   let working_article = article_data[id]
   popup_inner.innerHTML = `
-  <img src='${working_article.image_url}'/>
+  <img src='${proxy}=${working_article.image_url}'/>
   <h2>${working_article.title}</h2>
   <p>${working_article.content}</p>
   `
