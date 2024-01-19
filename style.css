@@ -10,17 +10,15 @@ body {
 header {
 	background: linear-gradient(to right, #666666, #333333);
 	color: #fff;
-	padding-top: 20px; /* Increase the padding for smaller screens */
 	text-align: center;
 	position: sticky;
 	top: 0;
 	box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
-	padding: 30px 20px;
+	padding:5px 5px;
 	
 }
 
 header h1 {
-	padding-inline: 10px;
 	font-size: 2rem;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -29,7 +27,6 @@ header h1 {
 
 nav {
 	background-color: #ddd;
-	padding: 20px; /* Increase the padding for smaller screens */
 	margin-inline: 0;
 }
 
@@ -80,10 +77,20 @@ section h2 {
 
 article {
 	margin-top: 0.5rem;
-	padding: 5px;
+	padding-top: 10px;
+  padding-bottom:10px;
+  padding-left: 10px;
+  padding-right:10px;
 	margin-bottom: 10px;
+  background:#f0f0f0;
+  border-radius: 20px;
+  /* avoid overflow of single article to other column */
+  break-inside: avoid;
+  color: #2b3743;
 }
-
+article:hover{
+  background: #dda;
+}
 article img {
 	width: 100%;
 	border-radius: 10px;
@@ -97,6 +104,40 @@ article a {
 article p {
 	line-height: 25px;
 }
+button {
+  cursor: pointer;
+  font-weight: 700;
+  font-family: Helvetica,"sans-serif";
+  transition: all .2s;
+  padding: 5px 20px;
+  border-radius: 100px;
+  background: #eeeaf4;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+button:hover {
+  background: #dde9f5;
+}
+
+button > svg {
+  width: 34px;
+  margin-left: 10px;
+  transition: transform .3s ease-in-out;
+}
+
+button:hover svg {
+  transform: translateX(5px);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
 
 h6{
 	color: #666666;
@@ -106,8 +147,6 @@ h6{
 }
 
 .bounded {
-	background-color: #f0f0f0; /* Background color of your choice */
-	border-left: 10px solid #000; /* Black border on the left side */
 	padding: 10px; /* Optional: Add padding to the content inside the element */
   }
   .button {
@@ -233,12 +272,67 @@ h6{
 	top: calc(50% - 1.25em);
 	left: calc(50% - 1.25em);
    }
+
+   /* Popup container */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+ color: #2b3743; 
+  /* Hide popup by default */
+  visibility: hidden;
+  opacity: 0;
+  
+  /* Transition effect when showing popup */
+  transition: 0.5s;
+}
+
+/* Popup inner container */
+.popup-inner {
+  position: absolute;
+  min-width: 60%;
+  min-height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,0%);
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 20px;
+  padding-bottom: 50px;
+}
+.popup-inner img{
+  width: 100%;
+  margin-inline: auto;
+  border-radius: 20px;
+}
+.popup-inner h2{
+  margin-inline: auto;
+  transform:translateY(-105px);
+  padding-left:10px;
+  color: #fff;
+  background:rgb(0,0,0,.5);
+  text-shadow: 0 0 rgba(0,0,0,.5);
+  border-radius: 20px;
+}
+
+.popup-inner p{
+  text-align: justify;  
+}
+/* Show popup */ 
+.show-popup {
+  visibility: visible;
+  opacity: 1;
+}
+
 @media screen and (min-width: 600px) {
 	main {
 		flex-direction: column-reverse;
 	}
 	header h1{
-		font-size:2.5rem;
+		font-size:1.5rem;
 	}
 	header nav{
 		font-size: 1.6rem;
@@ -247,7 +341,7 @@ h6{
 		flex-basis: 90%;
 	}
 	section h2{
-		font-size:2rem;
+		font-size:1.2rem;
 	}
 }
 .category{
@@ -308,7 +402,7 @@ h6{
 		flex-direction: column-reverse;
 	}
 	header h1{
-		font-size:2.5rem;
+		font-size:1.5rem;
 	}
 	header nav{
 		font-size: 1.6rem;
@@ -317,8 +411,13 @@ h6{
 		flex-basis: 90%;
 	}
 	section h2{
-		font-size:2rem;
+		font-size:1.2rem;
 	}
+  .popup-inner h2{
+    transform: translateY(0);
+    background: none;
+    color:#2b3743 ;
+  }
 	.category-holder{
 		columns: 2;
 		column-gap: 0.1rem;
@@ -340,14 +439,24 @@ h6{
 	section h2{
 		font-size:2rem;
 	}
+.popup-inner h2{
+    transform: translateY(-105px);
+    background: rgba(0,0,0,0.5);
+    color:#eeeaf4;
+  }
 	.category-holder{
 		columns: 6;
 		column-gap: 0.1rem;
+    padding-bottom: 10px;
 	}
+ #news-articles{
+    margin-top:10px;
+    columns: 2;
+  }
 }
 @media screen and (min-width: 1200px) {
 	main {
-		flex-direction: row;
+		flex-direction: column-reverse;
 	}
 	section {
 		flex-basis: 46%;
@@ -356,4 +465,8 @@ h6{
 		columns: 4;
 		column-gap: 0.1rem;
 	}
+  #news-articles{
+    margin-top:10px;
+    columns: 3;
+  }
 }
