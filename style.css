@@ -15,16 +15,27 @@ header {
 	top: 0;
 	box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
 	padding:5px 5px;
-	
+	display: flex;
+  flex:1;
+  text-align: left;
 }
-
+header img{
+  margin-block: auto;
+  height:2.5rem;
+  padding-inline: 20px;
+  border-radius: 15px;
+}
 header h1 {
 	font-size: 2rem;
+  line-height: 2rem;
 	font-weight: bold;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 }
-
+header p{
+  font-size: .85rem;
+  translate: 0 -20px;
+}
 nav {
 	background-color: #ddd;
 	margin-inline: 0;
@@ -326,7 +337,9 @@ h6{
   visibility: visible;
   opacity: 1;
 }
-
+#news-articles{
+  rows: 5;
+}
 @media screen and (min-width: 600px) {
 	main {
 		flex-direction: column-reverse;
@@ -433,6 +446,9 @@ h6{
 	header nav{
 		font-size: 1.6rem;
 	}
+  header img{
+    height: 5rem;
+  }
 	section {
 		flex-basis: 90%;
 	}
