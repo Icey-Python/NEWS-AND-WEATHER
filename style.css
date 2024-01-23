@@ -306,9 +306,9 @@ h6{
   position: absolute;
   min-width: 60%;
   min-height: 80%;
-  top: 50%;
+  top: 30%;
   left: 50%;
-  transform: translate(-50%,0%);
+  transform: translate(calc(-50% - 20px),0%);
   background-color: #f0f0f0;
   padding: 20px;
   border-radius: 20px;
