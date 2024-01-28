@@ -7,6 +7,24 @@ body {
 	font-family: 'Poppins', sans-serif;
 }
 
+body::-webkit-scrollbar {
+  width: 12px;  
+}
+
+body::-webkit-scrollbar-track {
+  background: #dde9f5 
+}
+  
+body::-webkit-scrollbar-thumb {
+  background: #888;  
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;  
+}
+#news{
+  overflow: hidden;
+}
 header {
 	background: linear-gradient(to right, #666666, #333333);
 	color: #fff;
@@ -64,7 +82,13 @@ nav a:hover {
 	background-color: #333;
 	color: #fff;
 }
-
+#weather{
+  width:90%;
+  margin-inline: auto;
+  padding:1rem;
+  border-radius: 2rem;
+  overflow: hidden;
+}
 main {
 	display: flex;
 	flex-direction: row;
@@ -208,7 +232,7 @@ h6{
   
 .hidden{
 	display: none;
-}  
+} 
 .loader {
 	position: relative;
 	width: 2.5em;
@@ -304,7 +328,7 @@ h6{
 /* Popup inner container */
 .popup-inner {
   position: absolute;
-  min-width: 60%;
+  min-width: 80%;
   min-height: 80%;
   top: 30%;
   left: 50%;
@@ -337,6 +361,7 @@ h6{
   visibility: visible;
   opacity: 1;
 }
+
 #news-articles{
   rows: 5;
 }
@@ -374,11 +399,12 @@ h6{
   
   .lable {
 	margin-top: 1px;
-	font-size: 19px;
-	line-height: 22px;
+	font-size: 14px;
+	line-height: 25px;
 	color: #4371b3;
 	font-family: sans-serif;
-	letter-spacing: 1px;
+	letter-spacing: 0.9px;
+  padding:.2rem;
   }
   
   .category:hover {
@@ -455,14 +481,17 @@ h6{
 	section h2{
 		font-size:2rem;
 	}
+.popup-inner{
+  width:50%;
+}
 .popup-inner h2{
     transform: translateY(-105px);
     background: rgba(0,0,0,0.5);
     color:#eeeaf4;
   }
 	.category-holder{
-		columns: 6;
-		column-gap: 0.1rem;
+		columns: 5;
+		column-gap: 0.5rem;
     padding-bottom: 10px;
 	}
  #news-articles{
@@ -478,11 +507,14 @@ h6{
 		flex-basis: 46%;
 	}
 	.category-holder{
-		columns: 4;
-		column-gap: 0.1rem;
+		columns: 8;
+		column-gap: 1rem;
 	}
   #news-articles{
     margin-top:10px;
     columns: 3;
+  }
+  .popup-inner{
+    width: 50%;
   }
 }
