@@ -29,6 +29,7 @@ function getCategory(category){
   }).done((data)=>{
     loader.classList.add('hidden')
     let output = '';
+    console.log(data.content)
     data.content.forEach((article,idx)=>{
       output += `<article id=${idx}>`
       output += `
@@ -56,7 +57,7 @@ function getNews() {
       url: `${news_url}/categories`
     }).done((data)=>{
       let category_chips = ''
-      data.forEach((category)=>{
+      data.content.forEach((category)=>{
         category_chips +=`
         <button class="category" onclick=getCategory('${encodeURIComponent(category)}')>
 					<span class="lable">${category}</span>
